@@ -1,0 +1,60 @@
+{
+  "name": "monkey-dev",
+  "description": "Development agent for MonkeyTrader — AI-powered paper trading bot + dashboard",
+  "prompt": "file://../prompts/dev.md",
+  "resources": ["file://README.md", "file://.kiro/specs/**/*.md", "file://.kiro/steering/**/*.md"],
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "grep",
+    "glob",
+    "web_search",
+    "web_fetch",
+    "introspect",
+    "thinking",
+    "code"
+  ],
+  "allowedTools": [
+    "read",
+    "shell",
+    "grep",
+    "glob",
+    "web_search",
+    "web_fetch",
+    "introspect",
+    "thinking",
+    "code"
+  ],
+  "toolsSettings": {
+    "write": {
+      "allowedPaths": [
+        ".kiro/**",
+        ".github/**",
+        "src/**",
+        "app/**",
+        "lib/**",
+        "db/**",
+        "scripts/**",
+        "README.md",
+        "CHANGELOG.md",
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+        "next.config.ts",
+        "drizzle.config.ts",
+        "vitest.config.ts",
+        "biome.json",
+        "postcss.config.mjs",
+        "tailwind.config.ts",
+        ".editorconfig",
+        ".gitignore",
+        ".env.example"
+      ]
+    },
+    "shell": {
+      "autoAllowReadonly": true,
+      "deniedCommands": [".*git commit.*", ".*git push.*", ".*git tag .*", ".*npm publish.*"]
+    }
+  }
+}
