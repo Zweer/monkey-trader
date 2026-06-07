@@ -1,0 +1,31 @@
+pre-commit:
+  piped: true
+  commands:
+    biome:
+      glob: "*.{ts,tsx,json,yaml,md,css,html}"
+      run: npx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+      priority: 1
+    lockfile:
+      glob: "package-lock.json"
+      run: npx lockfile-lint
+      priority: 1
+    package-sort:
+      glob: "package.json"
+      run: npx sort-package-json "package.json"
+      stage_fixed: true
+      priority: 1
+    test:
+      glob: "*.ts"
+      run: npx vitest run --reporter=dot
+      priority: 2
+
+commit-msg:
+  piped: true
+  commands:
+    sanitize:
+      run: sed -i 's/[[:space:]]*$//' {1} && sed -i 's/^ \{1,2\}//' {1} && sed -i '/^$/N;/^\n$/d' {1}
+      priority: 1
+    commitlint:
+      run: npx --no -- commitlint --edit {1}
+      priority: 2

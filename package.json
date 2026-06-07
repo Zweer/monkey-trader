@@ -1,0 +1,67 @@
+{
+  "name": "monkey-trader",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AI-powered paper trading bot + dashboard",
+  "license": "MIT",
+  "author": {
+    "name": "Zweer",
+    "email": "n.olivieriachille@gmail.com"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "postbuild": "[ -n \"$DATABASE_URL\" ] && drizzle-kit migrate || true",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "dev": "next dev --turbopack",
+    "lint": "concurrently npm:lint:* --prefixColors auto",
+    "lint:format": "biome check --write",
+    "lint:lockfile": "lockfile-lint",
+    "lint:sort_package": "sort-package-json --check \"package.json\"",
+    "lint:typecheck": "tsc --noEmit",
+    "prepare": "lefthook install",
+    "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "drizzle-orm": "^0.45.2",
+    "next": "^16.2.7",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@electric-sql/pglite": "^0.5.1",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^25.9.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.8",
+    "concurrently": "^10.0.3",
+    "drizzle-kit": "^0.31.10",
+    "lefthook": "^2.1.9",
+    "lockfile-lint": "^5.0.0",
+    "postcss": "^8.5.15",
+    "sort-package-json": "^4.0.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "lockfile-lint": {
+    "path": "package-lock.json",
+    "type": "npm",
+    "validate-https": true,
+    "allowed-hosts": [
+      "npm"
+    ]
+  }
+}

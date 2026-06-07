@@ -1,0 +1,49 @@
+name: Cron
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # tick: every 30 minutes
+    - cron: '0 9 * * *' # screen: daily at 09:00 UTC
+    - cron: '0 20 * * 0' # rebalance: Sunday at 20:00 UTC
+  workflow_dispatch:
+    inputs:
+      endpoint:
+        description: 'Endpoint to trigger (tick, screen, rebalance)'
+        required: true
+        default: 'tick'
+        type: choice
+        options:
+          - tick
+          - screen
+          - rebalance
+
+jobs:
+  tick:
+    if: github.event.schedule == '*/30 * * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.endpoint == 'tick')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger tick
+        run: |
+          curl -s -X POST "${{ vars.VERCEL_URL }}/api/tick" \
+            -H "Authorization: Bearer ${{ secrets.TICK_SECRET }}" \
+            --max-time 5 || true
+
+  screen:
+    if: github.event.schedule == '0 9 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.endpoint == 'screen')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger screen
+        run: |
+          curl -s -X POST "${{ vars.VERCEL_URL }}/api/screen" \
+            -H "Authorization: Bearer ${{ secrets.TICK_SECRET }}" \
+            --max-time 5 || true
+
+  rebalance:
+    if: github.event.schedule == '0 20 * * 0' || (github.event_name == 'workflow_dispatch' && github.event.inputs.endpoint == 'rebalance')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger rebalance
+        run: |
+          curl -s -X POST "${{ vars.VERCEL_URL }}/api/rebalance" \
+            -H "Authorization: Bearer ${{ secrets.TICK_SECRET }}" \
+            --max-time 5 || true
