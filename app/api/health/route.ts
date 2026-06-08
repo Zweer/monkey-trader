@@ -1,5 +1,4 @@
 import { google } from '@ai-sdk/google';
-import { createClient } from '@alpacahq/typescript-sdk';
 import { generateText } from 'ai';
 import { sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
@@ -49,15 +48,14 @@ async function checkGemini(): Promise<ServiceStatus> {
 async function checkAlpaca(): Promise<ServiceStatus> {
   if (!process.env.ALPACA_API_KEY || !process.env.ALPACA_SECRET_KEY) return 'missing_key';
   try {
-    const client = createClient({
-      key: process.env.ALPACA_API_KEY,
-      secret: process.env.ALPACA_SECRET_KEY,
+    const res = await fetch('https://paper-api.alpaca.markets/v2/account', {
+      headers: {
+        'APCA-API-KEY-ID': process.env.ALPACA_API_KEY,
+        'APCA-API-SECRET-KEY': process.env.ALPACA_SECRET_KEY,
+      },
+      signal: AbortSignal.timeout(10_000),
     });
-    await Promise.race([
-      client.getAccount(),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000)),
-    ]);
-    return 'ok';
+    return res.ok ? 'ok' : 'error';
   } catch {
     return 'error';
   }
