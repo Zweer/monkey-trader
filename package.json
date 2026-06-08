@@ -27,8 +27,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
+    "@ai-sdk/google": "^3.0.80",
+    "@alpacahq/typescript-sdk": "^0.0.32-preview",
     "@neondatabase/serverless": "^1.1.0",
+    "ai": "^6.0.197",
     "drizzle-orm": "^0.45.2",
     "lightweight-charts": "^5.2.0",
     "next": "^16.2.7",
